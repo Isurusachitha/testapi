@@ -6,3 +6,8 @@ gunicorn
 uvicorn
 numpy
 python-multipart
+scikit-image
+scipy
+pandas
+librosa
+scikit-learn
