@@ -24,7 +24,7 @@ app_desc = """<h2>Smart Stethoscope Prediction Service</h2>
 <br>by USJ """
 
 app = FastAPI(title="Smart Stethoscope Prediction Service",
-              description="API Documentation",
+              description=app_desc,
               version="1.0.0"
               )
 
