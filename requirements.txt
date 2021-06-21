@@ -10,5 +10,4 @@ scikit-image
 scipy
 pandas
 librosa==0.7.2
-llvmlite==0.31.0
 scikit-learn
