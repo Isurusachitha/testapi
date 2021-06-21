@@ -9,6 +9,6 @@ python-multipart
 scikit-image
 scipy
 pandas
-numba
-librosa==0.7.2
+numba==0.48
+librosa==0.6.3
 scikit-learn
