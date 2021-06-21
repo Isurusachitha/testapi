@@ -52,8 +52,9 @@ def check_risk(symptom: Symptom):
 
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
-    audio_data_in, sr_in = librosa.load(io.BytesIO(await file.read()))
-    length_in = len(audio_data_in) / sr_in
+
+    # audio_data_in, sr_in = librosa.load(io.BytesIO(await file.read()))
+    # length_in = len(audio_data_in) / sr_in
     #
     # predictor = PredictionService()
     # diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
@@ -61,7 +62,7 @@ async def predict(file: UploadFile = File(...)):
     #
     # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
-    return {"predictions": str(length_in)}
+    return {"predictions": file.filename}
 
 
 @app.post("/api/v2/predict/", tags=["Prediction"])
