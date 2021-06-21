@@ -52,7 +52,7 @@ def check_risk(symptom: Symptom):
 
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
-    upload_audio = file.read();
+    upload_audio = await file.read();
     audio_data_in, sr_in = librosa.load(upload_audio)
     # length_in = len(audio_data_in) / sr_in
     #
@@ -67,6 +67,7 @@ async def predict(file: UploadFile = File(...)):
 
 @app.post("/api/v2/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
+    print(type(file.file))
     audio_data_in, sr_in = librosa.load(file.file)
     length_in = len(audio_data_in) / sr_in
     #
