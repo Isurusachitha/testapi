@@ -9,5 +9,6 @@ python-multipart
 scikit-image
 scipy
 pandas
+numba
 librosa==0.7.2
 scikit-learn
