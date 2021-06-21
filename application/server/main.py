@@ -66,7 +66,7 @@ async def predict(file: UploadFile = File(...)):
 
 @app.post("/api/v2/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
-    audio_data_in, sr_in = librosa.load(io.BytesIO(await file.read()))
+    audio_data_in, sr_in = librosa.load(file.file)
     length_in = len(audio_data_in) / sr_in
     #
     # predictor = PredictionService()
