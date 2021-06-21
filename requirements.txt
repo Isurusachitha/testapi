@@ -9,5 +9,6 @@ python-multipart
 scikit-image
 scipy
 pandas
-librosa
+librosa==0.7.2
+llvmlite==0.31.0
 scikit-learn
