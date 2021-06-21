@@ -4,6 +4,7 @@ from starlette.responses import RedirectResponse
 
 import io
 import librosa
+import aio
 from fastapi.encoders import jsonable_encoder
 
 from application.components import predict, read_imagefile
@@ -53,7 +54,8 @@ def check_risk(symptom: Symptom):
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
     upload_audio = await file.read();
-    audio_data_in, sr_in = librosa.load(upload_audio)
+    auidio_file = await file.write(upload_audio)
+    audio_data_in, sr_in = librosa.load(auidio_file)
     # length_in = len(audio_data_in) / sr_in
     #
     # predictor = PredictionService()
