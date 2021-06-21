@@ -1,12 +1,20 @@
-# Deploying FastAPI app to Heroku
+# tensorflow-web-app-starter-pack
 
-FastAPI Tutorials
+This web app is created with [FastAPI](https://fastapi.tiangolo.com/) which is high performance asynchronous library for fast development of APIs.
 
-A Simple API written using FastAPI framework, a python based framework to build production grade REST APIs.
+It automatically generates SwaggerUI for APIs.
 
-The Procfile has the command to support the deployment of this Simple API to Heroku.
+## Upload any photo andd try it out at https://tf-webapp.herokuapp.com/
+
+## How to run?
+
+`uvicorn application.server.main:app`
+
+## Screenshots
+
+### SwaggerUI
+![SwaggerUI](images/main.png)
 
 
-| Code 💻 | Video 📺 | Article 📝 |
-|----------|-------------|------|
-| [Deploying fastapi app to Heroku](https://github.com/windson/fastapi/tree/fastapi-deploy-heroku) | [Deploy FastAPI on Heroku in just 6 minutes](http://bit.ly/3aO1g35) | [Create and Deploy FastAPI app to Heroku](http://bit.ly/2RD68jM) |
+### Response
+![Response](images/response.png)
