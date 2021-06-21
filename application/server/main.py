@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from starlette.responses import RedirectResponse
 
-import io
-import librosa
+# import io
+# import librosa
 from fastapi.encoders import jsonable_encoder
 
 from application.components import predict, read_imagefile
