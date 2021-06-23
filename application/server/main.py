@@ -5,15 +5,13 @@ from starlette.responses import RedirectResponse
 import io
 import librosa
 import aiofiles
-import  os
+import os
 import random
 import time
 
 from fastapi.encoders import jsonable_encoder
 
-from application.components import predict, read_imagefile
-from application.schema import Symptom
-from application.components.prediction import symptom_check
+from application.components.PredictAppService.prediction import PredictionService, Predictor
 
 tags_metadata = [
     {
@@ -35,21 +33,24 @@ app = FastAPI(title="Smart Stethoscope Prediction Service",
 
 out_file_path = os.path.dirname(__file__)
 
+
 @app.get("/", include_in_schema=False)
 async def index():
     return RedirectResponse(url="/docs")
+
 
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(file: bytes = File(...)):
     audio_data_in, sr_in = librosa.load(io.BytesIO(file))
     length_in = len(audio_data_in) / sr_in
-    #
-    # predictor = PredictionService()
-    # diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
-    #
-    # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+
+    predictor = PredictionService()
+    diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
+
+    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
     return {"predictions": 'json_diagnosis_predictions'}
+
 
 @app.post("/api/v4/predict/", tags=["Prediction"])
 async def predict(image: UploadFile = File(...)):
@@ -66,27 +67,32 @@ async def predict(image: UploadFile = File(...)):
         f.close()
 
     audio_data_in, sr_in = librosa.load(file_name)
+    length_in = len(audio_data_in) / sr_in
 
-    return {"filename": sr_in }
+    predictor = PredictionService()
+    diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
+
+    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+
+    return {"filename": json_diagnosis_predictions}
 
 
 @app.post("/api/v5/predict/", tags=["Prediction"])
 async def predict(file: bytes = File(...)):
     audio_data_in, sr_in = librosa.load(file)
     length_in = len(audio_data_in) / sr_in
-    #
-    # predictor = PredictionService()
-    # diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
-    #
-    # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+
+    predictor = PredictionService()
+    diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
+
+    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
     return {"predictions": 'json_diagnosis_predictions'}
 
+
 @app.post("/api/v2/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
-
     content = await file.read()  # async read
-
 
     audio_data_in, sr_in = librosa.load(file.file)
     # length_in = len(audio_data_in) / sr_in
@@ -114,6 +120,7 @@ async def predict(file: UploadFile = File(...)):
 
     return {"predictions": "Healthy"}
 
+
 @app.post("/api/test/predict/", tags=["Test-Prediction"])
 async def predict(file: UploadFile = File(...)):
     diagnosis_class_list = ['URTI', 'Healthy', 'COPD', 'Bronchiectasis', 'Pneumonia', 'Bronchiolitis']
@@ -125,7 +132,6 @@ async def predict(file: UploadFile = File(...)):
     json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
     return {"predictions": json_diagnosis_predictions}
-
 
 
 if __name__ == "__main__":
