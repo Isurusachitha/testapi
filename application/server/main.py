@@ -8,7 +8,6 @@ import aiofiles
 import os
 import random
 import time
-
 from fastapi.encoders import jsonable_encoder
 
 from application.components.PredictAppService.prediction import PredictionService, Predictor
@@ -45,7 +44,7 @@ async def predict(audio: UploadFile = File(...)):
 
 
     try:
-        os.mkdir("images")
+        os.mkdir("audio")
         print(os.getcwd())
     except Exception as e:
         print(e)
