@@ -109,7 +109,7 @@ async def predict(file: UploadFile = File(...)):
 async def predict(file: UploadFile = File(...)):
     diagnosis_class_list = ['URTI', 'Healthy', 'COPD', 'Bronchiectasis', 'Pneumonia', 'Bronchiolitis']
 
-    time.sleep(2)
+    time.sleep(4)
 
     diagnosis_predictions = random.choices(diagnosis_class_list, weights=(3, 10, 80, 2, 3, 2), k=1)
 
