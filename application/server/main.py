@@ -5,6 +5,7 @@ from starlette.responses import RedirectResponse
 import io
 import librosa
 import aiofiles
+import  os
 from fastapi.encoders import jsonable_encoder
 
 from application.components import predict, read_imagefile
@@ -29,6 +30,7 @@ app = FastAPI(title="Smart Stethoscope Prediction Service",
               version="1.0.0"
               )
 
+out_file_path = os.path.dirname(__file__)
 
 @app.get("/", include_in_schema=False)
 async def index():
@@ -47,12 +49,13 @@ async def predict(file: bytes = File(...)):
     return {"predictions": 'json_diagnosis_predictions'}
 
 @app.post("/api/v4/predict/", tags=["Prediction"])
-async def predict(uploaded_file: UploadFile = File(...)):
+async def predict(in_file: bytes = File(...)):
     # ...
-    file_location = f"files/{uploaded_file.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(uploaded_file.file.read())
-    return {"info": f"file '{uploaded_file.filename}' saved at '{file_location}'"}
+    async with aiofiles.open(out_file_path, 'wb') as out_file:
+        content = await in_file.read()  # async read
+        await out_file.write(content)  # async write
+
+    return {"Result": "OK"}
 
 
 @app.post("/api/v5/predict/", tags=["Prediction"])
