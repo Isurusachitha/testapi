@@ -1,11 +1,5 @@
-import pandas as pd
-import numpy as np
+
 from scipy import signal
-import matplotlib.pyplot as plt
-from scipy import stats
-import IPython.display as ipd
-import librosa
-import librosa.display
 from .treadsafeSingleton import SingletonMeta
 
 from skimage.restoration import denoise_wavelet

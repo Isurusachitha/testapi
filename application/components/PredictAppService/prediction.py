@@ -1,7 +1,6 @@
 from application.components.PredictAppService.treadsafeSingleton import SingletonMeta
 from application.components.PredictAppService.preprocessor_pipeline import AudioPreProcessor
 
-from django.conf import settings
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.models import load_model
 import numpy as np
