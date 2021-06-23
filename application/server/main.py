@@ -52,11 +52,22 @@ async def predict(file: bytes = File(...)):
     return {"predictions": 'json_diagnosis_predictions'}
 
 @app.post("/api/v4/predict/", tags=["Prediction"])
-async def predict(file: UploadFile = File(...)):
+async def predict(image: UploadFile = File(...)):
+    print(image.file)
+    # print('../'+os.path.isdir(os.getcwd()+"images"),"*************")
+    try:
+        os.mkdir("images")
+        print(os.getcwd())
+    except Exception as e:
+        print(e)
+    file_name = os.getcwd() + "/images/" + image.filename.replace(" ", "-")
+    with open(file_name, 'wb+') as f:
+        f.write(image.file.read())
+        f.close()
 
-    audio_data_in, sr_in = librosa.load(io.BytesIO(file.file.read()))
+    audio_data_in, sr_in = librosa.load(file_name)
 
-    return {"Result": "OK"}
+    return {"filename": sr_in }
 
 
 @app.post("/api/v5/predict/", tags=["Prediction"])
