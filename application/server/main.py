@@ -6,6 +6,9 @@ import io
 import librosa
 import aiofiles
 import  os
+import random
+import time
+
 from fastapi.encoders import jsonable_encoder
 
 from application.components import predict, read_imagefile
@@ -101,6 +104,19 @@ async def predict(file: UploadFile = File(...)):
     # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
     return {"predictions": "Healthy"}
+
+@app.post("/api/test/predict/", tags=["Test-Prediction"])
+async def predict(file: UploadFile = File(...)):
+    diagnosis_class_list = ['URTI', 'Healthy', 'COPD', 'Bronchiectasis', 'Pneumonia', 'Bronchiolitis']
+
+    time.sleep(2)
+
+    diagnosis_predictions = random.choices(diagnosis_class_list, weights=(3, 10, 80, 2, 3, 2), k=1)
+
+    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+
+    return {"predictions": json_diagnosis_predictions}
+
 
 
 if __name__ == "__main__":
