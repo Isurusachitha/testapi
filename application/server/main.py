@@ -34,24 +34,19 @@ app = FastAPI(title="Smart Stethoscope Prediction Service",
 async def index():
     return RedirectResponse(url="/docs")
 
-
-@app.post("/predict/image")
-async def predict_api(file: UploadFile = File(...)):
-    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png")
-    if not extension:
-        return "Image must be jpg or png format!"
-    image = read_imagefile(await file.read())
-    prediction = predict(image)
-
-    return prediction
-
-
-@app.post("/api/covid-symptom-check")
-def check_risk(symptom: Symptom):
-    return symptom_check.get_risk_level(symptom)
-
-
 @app.post("/api/v1/predict/", tags=["Prediction"])
+async def predict(file: bytes = File(...)):
+    audio_data_in, sr_in = librosa.load(io.BytesIO(file))
+    length_in = len(audio_data_in) / sr_in
+    #
+    # predictor = PredictionService()
+    # diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
+    #
+    # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+
+    return {"predictions": 'json_diagnosis_predictions'}
+
+@app.post("/api/v2/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
 
     content = await file.read()  # async read
@@ -69,7 +64,7 @@ async def predict(file: UploadFile = File(...)):
     return {"predictions": file.filename}
 
 
-@app.post("/api/v2/predict/", tags=["Prediction"])
+@app.post("/api/v3/predict/", tags=["Prediction"])
 async def predict(file: UploadFile = File(...)):
     print(type(file.file))
     audio_data_in, sr_in = librosa.load(file.file)
