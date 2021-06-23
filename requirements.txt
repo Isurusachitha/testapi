@@ -15,3 +15,4 @@ ffmpeg
 numba==0.48
 librosa==0.6.3
 scikit-learn
+subprocess

@@ -8,6 +8,7 @@ import aiofiles
 import os
 import random
 import time
+import subprocess
 from fastapi.encoders import jsonable_encoder
 
 from application.components.PredictAppService.prediction import PredictionService, Predictor
