@@ -52,11 +52,9 @@ async def predict(file: bytes = File(...)):
     return {"predictions": 'json_diagnosis_predictions'}
 
 @app.post("/api/v4/predict/", tags=["Prediction"])
-async def predict(in_file: bytes = File(...)):
-    # ...
-    async with aiofiles.open(out_file_path, 'wb') as out_file:
-        content = await in_file.read()  # async read
-        await out_file.write(content)  # async write
+async def predict(file: UploadFile = File(...)):
+
+    audio_data_in, sr_in = librosa.load(io.BytesIO(file.file.read()))
 
     return {"Result": "OK"}
 
