@@ -36,7 +36,7 @@ async def index():
 
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(file: bytes = File(...)):
-    audio_data_in, sr_in = librosa.load(io.BytesIO(await file))
+    audio_data_in, sr_in = librosa.load(io.BytesIO(file))
     length_in = len(audio_data_in) / sr_in
     #
     # predictor = PredictionService()
@@ -47,16 +47,12 @@ async def predict(file: bytes = File(...)):
     return {"predictions": 'json_diagnosis_predictions'}
 
 @app.post("/api/v4/predict/", tags=["Prediction"])
-async def predict(file: bytes = File(...)):
-    audio_data_in, sr_in = librosa.load(await file)
-    length_in = len(audio_data_in) / sr_in
-    #
-    # predictor = PredictionService()
-    # diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
-    #
-    # json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
-
-    return {"predictions": 'json_diagnosis_predictions'}
+async def predict(uploaded_file: UploadFile = File(...)):
+    # ...
+    file_location = f"files/{uploaded_file.filename}"
+    with open(file_location, "wb+") as file_object:
+        file_object.write(uploaded_file.file.read())
+    return {"info": f"file '{uploaded_file.filename}' saved at '{file_location}'"}
 
 
 @app.post("/api/v5/predict/", tags=["Prediction"])
