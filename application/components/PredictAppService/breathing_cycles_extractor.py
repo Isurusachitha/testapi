@@ -1,7 +1,7 @@
-from application.components.PredictAppService.utils import get_audio
+from .utils import get_audio
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
-from application.components.PredictAppService.treadsafeSingleton import SingletonMeta
+from .treadsafeSingleton import SingletonMeta
 
 
 class AudioMovingWindowPreProcessor(metaclass=SingletonMeta):

@@ -1,7 +1,7 @@
-from application.components.PredictAppService.breathing_cycles_extractor import AudioMovingWindowPreProcessor
-from application.components.PredictAppService.filters import FilterPipeline
+from .breathing_cycles_extractor import AudioMovingWindowPreProcessor
+from .filters import FilterPipeline
 
-from application.components.PredictAppService.treadsafeSingleton import SingletonMeta
+from .treadsafeSingleton import SingletonMeta
 import librosa
 import numpy as np
 from typing import Tuple

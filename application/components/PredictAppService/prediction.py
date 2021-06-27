@@ -1,13 +1,13 @@
-from application.components.PredictAppService.treadsafeSingleton import SingletonMeta
-from application.components.PredictAppService.preprocessor_pipeline import AudioPreProcessor
+from .treadsafeSingleton import SingletonMeta
+from .preprocessor_pipeline import AudioPreProcessor
 
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.models import load_model
 import numpy as np
 import os
 
-URL_DUAL_PREDICTION_MODEL_PATH = "application/components/static/ml_models/Diagnosis_Prediction_v5.h5"
-URL_DISEASE_CLASS_LABELS_PATH = "application/components/static/label_encodings/diagnosis_classes_v5.npy"
+URL_DUAL_PREDICTION_MODEL_PATH = "/content/testapi/application/components/static/ml_models/Diagnosis_Prediction_v5.h5"
+URL_DISEASE_CLASS_LABELS_PATH = "/content/testapi/application/components/static/label_encodings/diagnosis_classes_v5.npy"
 
 
 class PredictionService:
