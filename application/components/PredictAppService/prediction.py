@@ -16,6 +16,8 @@ class PredictionService:
     def __init__(self):
         self.pre_processor = AudioPreProcessor()
         self.prediction_model = load_model(URL_DUAL_PREDICTION_MODEL_PATH)
+        self.noise_prediction_model = load_model(URL_BINARY_NOISE_PREDICTION_MODEL_PATH)
+
         self.disease_class_encoder = LabelEncoder()
         self.disease_class_encoder.classes_ = np.load(URL_DISEASE_CLASS_LABELS_PATH, allow_pickle=True)
 
