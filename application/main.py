@@ -79,39 +79,15 @@ async def predict(audio: UploadFile = File(...)):
 
 
 
-@app.post("/api/v2/predict/", tags=["Prediction"])
-async def predict(audio: UploadFile = File(...)):
 
-    try:
-        os.mkdir("images")
-        print(os.getcwd())
-    except Exception as e:
-        print(e)
-    file_name = os.getcwd() + "/audio/" + audio.filename.replace(" ", "-")
-    with open(file_name, 'wb+') as f:
-        f.write(audio.file.read())
-        f.close()
-
-    audio_data_in, sr_in = librosa.load(file_name)
-    length_in = len(audio_data_in) / sr_in
-
-    predictor = PredictionService()
-    diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
-
-    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
-
-    return {"predictions": "Healthy"}
 
 
 @app.post("/api/test/predict/", tags=["Test-Prediction"])
 async def predict(file: UploadFile = File(...)):
-    diagnosis_class_list = ['URTI', 'Healthy', 'COPD', 'Bronchiectasis', 'Pneumonia', 'Bronchiolitis']
 
     time.sleep(4)
 
-    diagnosis_predictions = random.choices(diagnosis_class_list, weights=(3, 10, 80, 2, 3, 2), k=1)
-
-    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+    json_diagnosis_predictions = jsonable_encoder(list(file.filename))
 
     return {"predictions": json_diagnosis_predictions}
 
