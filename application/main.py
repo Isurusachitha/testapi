@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from starlette.responses import RedirectResponse
 
-#Deployment
+# Deployment
 from fastapi.middleware.cors import CORSMiddleware
 import nest_asyncio
 from pyngrok import ngrok
@@ -35,7 +35,6 @@ app = FastAPI(title="Smart Stethoscope Prediction Service",
               version="1.0.0"
               )
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
@@ -52,11 +51,8 @@ async def index():
     return RedirectResponse(url="/docs")
 
 
-
 @app.post("/api/v1/predict/", tags=["Prediction"])
 async def predict(audio: UploadFile = File(...)):
-
-
     try:
         os.mkdir("audio")
         print(os.getcwd())
@@ -78,21 +74,9 @@ async def predict(audio: UploadFile = File(...)):
     return {"filename": json_diagnosis_predictions}
 
 
-
 @app.post("/api/v2/predict/", tags=["Prediction"])
 async def predict(audio: UploadFile = File(...)):
-
-    try:
-        os.mkdir("images")
-        print(os.getcwd())
-    except Exception as e:
-        print(e)
-    file_name = os.getcwd() + "/audio/" + audio.filename.replace(" ", "-")
-    with open(file_name, 'wb+') as f:
-        f.write(audio.file.read())
-        f.close()
-
-    audio_data_in, sr_in = librosa.load(file_name)
+    audio_data_in, sr_in = librosa.load(audio.file)
     length_in = len(audio_data_in) / sr_in
 
     predictor = PredictionService()
@@ -100,25 +84,21 @@ async def predict(audio: UploadFile = File(...)):
 
     json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
 
-    return {"predictions": "Healthy"}
+    return {"filename": json_diagnosis_predictions}
 
 
 @app.post("/api/test/predict/", tags=["Test-Prediction"])
-async def predict(file: UploadFile = File(...)):
-    diagnosis_class_list = ['URTI', 'Healthy', 'COPD', 'Bronchiectasis', 'Pneumonia', 'Bronchiolitis']
-
+async def predict(audio: UploadFile = File(...)):
     time.sleep(4)
 
-    diagnosis_predictions = random.choices(diagnosis_class_list, weights=(3, 10, 80, 2, 3, 2), k=1)
-
-    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+    json_diagnosis_predictions = jsonable_encoder(list(audio.filename))
 
     return {"predictions": json_diagnosis_predictions}
 
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #   uvicorn.run(app, debug=True)
 ngrok_tunnel = ngrok.connect(8000)
-print('Public URL:', str(ngrok_tunnel.public_url)+'/docs')
+print('Public URL:', str(ngrok_tunnel.public_url) + '/docs')
 nest_asyncio.apply()
 uvicorn.run(app, port=8000)
