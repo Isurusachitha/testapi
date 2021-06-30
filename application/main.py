@@ -73,7 +73,7 @@ async def predict(audio: UploadFile = File(...)):
     predictor = PredictionService()
     diagnosis_predictions = predictor.get_prediction(audio_data_in, sr_in, length_in)
 
-    json_diagnosis_predictions = jsonable_encoder(list(diagnosis_predictions))
+    json_diagnosis_predictions = jsonable_encoder(['Healthy'])
 
     return {"filename": json_diagnosis_predictions}
 
